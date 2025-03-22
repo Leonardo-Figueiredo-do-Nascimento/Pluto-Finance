@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                         context, MaterialPageRoute(builder: (_) => SignInPage()));
                   },
                   style: TextButton.styleFrom(
@@ -43,7 +43,7 @@ class LoginPage extends StatelessWidget {
                 SizedBox(height: 10),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushReplacement(
+                    Navigator.push(
                         context, MaterialPageRoute(builder: (_) => SignUpPage()));
                   },
                   style: TextButton.styleFrom(
