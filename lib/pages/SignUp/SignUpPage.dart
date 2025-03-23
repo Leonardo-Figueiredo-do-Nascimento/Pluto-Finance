@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
-import 'package:pluto_finance/models/Usuario.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -17,17 +17,13 @@ class _SignUpPageState extends State<SignUpPage> {
   var senhaController = TextEditingController(text: "");
   var senhaConfirmacaoController = TextEditingController(text: "");
   bool senhaVisivel = true;
-  late UsuarioContext usuarioContext;
-
-  @override
-  void initState()
-  {
-    super.initState();
-    usuarioContext = UsuarioContext();
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    
+    final usuarioContext = context.read<UsuarioContext>();
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -153,8 +149,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
                     if(nomeController.text!="" && telefoneController.text!="" && emailController.text!="" && senhaController.text!="" && senhaConfirmacaoController.text!=""){
                       if(senhaController.text == senhaConfirmacaoController.text) {
-                        Usuario u = new Usuario.comParametros(nomeController.text,emailController.text,senhaController.text,senhaController.text);
-                        usuarioContext.setUsuario(u);
+                        usuarioContext.setNome(nomeController.text);
+                        usuarioContext.setEmail(emailController.text);
+                        usuarioContext.setSenha(senhaController.text);
+                        usuarioContext.setTelefone(telefoneController.text);
                         Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
                       } else {
                         showDialog(context: context, builder: (BuildContext context) {

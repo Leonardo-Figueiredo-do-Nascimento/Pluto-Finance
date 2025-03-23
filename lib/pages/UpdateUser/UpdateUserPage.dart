@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
-import 'package:pluto_finance/models/Usuario.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:provider/provider.dart';
 
 class UpdateUserPage extends StatefulWidget {
   const UpdateUserPage({super.key});
@@ -20,27 +20,17 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
   var senhaController = TextEditingController(text: "");
   bool senhaVisivel = true;
   bool habiilitarEdicao = false;
-
-  void CarregarUsuario() async{
-    Usuario usuario = usuarioContext.getUsuario();
-    setState(() {
-      nomeController.text = usuario.nome!;
-      telefoneController.text = usuario.telefone!;
-      emailController.text = usuario.email!;
-      senhaController.text = usuario.senha!;
-    });
-  }
-
-  @override
-  void initState()
-  {
-    super.initState();
-    usuarioContext = UsuarioContext();
-    CarregarUsuario();
-  }
   
   @override
   Widget build(BuildContext context) {
+
+    final usuarioContext = context.read<UsuarioContext>();
+
+    nomeController.text = usuarioContext.nome!;
+    emailController.text = usuarioContext.email!;
+    senhaController.text = usuarioContext.senha!;
+    telefoneController.text = usuarioContext.telefone!;
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

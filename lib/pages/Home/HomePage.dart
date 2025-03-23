@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/widgets/Drawer/UserDrawer.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,16 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late UsuarioContext usuarioContext;
-
-  @override
-  void initState() {
-    super.initState();
-    usuarioContext = UsuarioContext();
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    final usuarioContext = context.read<UsuarioContext>();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -60,6 +57,19 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
+                          showDialog(context: context, builder: (BuildContext context) {
+                          return AlertDialog(
+                            content: Text(usuarioContext.nome!,style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop(); // Fecha o alerta
+                                },
+                                child: const Text("OK"),
+                              ),
+                            ],
+                          );
+                        });
                         }, 
                         child: Container(
                           height: 70,
