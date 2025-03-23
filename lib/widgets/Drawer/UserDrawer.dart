@@ -59,6 +59,19 @@ class _UserDrawerState extends State<UserDrawer> {
                       ]
                     )
                   ),
+                  Divider(),
+                  TextButton(
+                    onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => AboutPage()));
+                    }, 
+                    child: Row(
+                      children: [
+                        Icon(Icons.insights, size: 24,color: Colors.white),
+                        SizedBox(width: 10,),
+                        Text("Consultar Registros", style: TextStyle(fontSize: 20,color: Colors.white),)
+                      ]
+                    )
+                  ),
                 ],
               ),
               Column(

@@ -10,7 +10,7 @@ class UsuarioContext extends ChangeNotifier {
   String? get email => _usuario.email;
   String? get senha => _usuario.senha;
   String? get telefone => _usuario.telefone;
-  double get carteira => _usuario.carteira;
+  double get saldoTotal => _usuario.saldoTotal;
 
   void setUsuarioId(int id) {
     _usuario.usuarioId = id;
@@ -38,18 +38,18 @@ class UsuarioContext extends ChangeNotifier {
   }
 
   void setCarteira(double valor) {
-    _usuario.carteira = valor;
+    _usuario.saldoTotal = valor;
     notifyListeners();
   }
 
   void adicionarSaldo(double valor) {
-    _usuario.carteira += valor;
+    _usuario.saldoTotal += valor;
     notifyListeners();
   }
 
   void removerSaldo(double valor) {
-    if (_usuario.carteira >= valor) {
-      _usuario.carteira -= valor;
+    if (_usuario.saldoTotal >= valor) {
+      _usuario.saldoTotal -= valor;
       notifyListeners();
     }
   }

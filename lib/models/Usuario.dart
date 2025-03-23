@@ -4,7 +4,7 @@ class Usuario{
   String? email;
   String? senha;
   String? telefone;
-  double carteira = 0.0;
+  double saldoTotal = 0.00;
 
   Usuario({
     int? usuarioId,
@@ -12,6 +12,6 @@ class Usuario{
     String? email,
     String? senha,
     String? telefone,
-    double carteira = 0.0,
+    double carteira = 0.00,
   });
 }
