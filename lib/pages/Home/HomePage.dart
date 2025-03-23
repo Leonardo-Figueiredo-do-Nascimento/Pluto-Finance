@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 10, // Simulação de 10 registros
+                      itemCount: 3, 
                       itemBuilder: (context, index) {
                         return ListTile(
                           title: Text(
