@@ -66,7 +66,7 @@ class _UserDrawerState extends State<UserDrawer> {
                     }, 
                     child: Row(
                       children: [
-                        Icon(Icons.insights, size: 24,color: Colors.white),
+                        Icon(Icons.assignment, size: 24,color: Colors.white),
                         SizedBox(width: 10,),
                         Text("Consultar Registros", style: TextStyle(fontSize: 20,color: Colors.white),)
                       ]

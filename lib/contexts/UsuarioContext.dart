@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pluto_finance/models/Registro.dart';
 import 'package:pluto_finance/models/Usuario.dart';
 
 class UsuarioContext extends ChangeNotifier {
@@ -11,6 +12,7 @@ class UsuarioContext extends ChangeNotifier {
   String? get senha => _usuario.senha;
   String? get telefone => _usuario.telefone;
   double get saldoTotal => _usuario.saldoTotal;
+  List<Registro> get registros => _usuario.registros;
 
   void setUsuarioId(int id) {
     _usuario.usuarioId = id;
@@ -52,5 +54,8 @@ class UsuarioContext extends ChangeNotifier {
       _usuario.saldoTotal -= valor;
       notifyListeners();
     }
+  }
+  void adicionarRegistro(Registro registro){
+    _usuario.registros.add(registro);
   }
 }
