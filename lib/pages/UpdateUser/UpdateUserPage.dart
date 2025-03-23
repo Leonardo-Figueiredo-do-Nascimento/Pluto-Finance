@@ -55,7 +55,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     Text("Nome",style: TextStyle(color: Colors.white,fontSize: 20)),
                     TextField(
                       enabled: habiilitarEdicao,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255)),
                       controller: nomeController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -74,7 +74,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     TextField(
                       enabled: habiilitarEdicao,
                       keyboardType: TextInputType.number,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255)),
                       controller: telefoneController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -92,7 +92,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     Text("E-mail",style: TextStyle(color: Colors.white,fontSize: 20)),
                     TextField(
                       enabled: habiilitarEdicao,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255)),
                       controller: emailController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -110,7 +110,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     Text("Senha",style: TextStyle(color: Colors.white,fontSize: 20)),
                     TextField(
                       enabled: habiilitarEdicao,
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255)),
                       controller: senhaController,
                       obscureText: senhaVisivel,
                       decoration: InputDecoration(
@@ -119,7 +119,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                         fillColor: Colors.black,
                         border: OutlineInputBorder(),
                         suffixIcon: IconButton(
-                          icon: Icon(senhaVisivel ? Icons.visibility : Icons.visibility_off , color: Colors.white,),
+                          icon: Icon(senhaVisivel ? Icons.visibility : Icons.visibility_off , color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255),),
                           onPressed: () {
                             setState(() {
                               senhaVisivel = !senhaVisivel;
@@ -136,7 +136,18 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                     habiilitarEdicao ? TextButton(
                       onPressed: () {
                         if(nomeController.text!="" && telefoneController.text!="" && emailController.text!="" && senhaController.text!=""){
-                          Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                          usuarioContext.setNome(nomeController.text);
+                          usuarioContext.setEmail(emailController.text);
+                          usuarioContext.setSenha(senhaController.text);
+                          usuarioContext.setTelefone(telefoneController.text);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.deepPurple.shade700,
+                              content: const Text('Dados atualizados.',style: TextStyle(fontSize: 20,color: Colors.white),),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomePage()));
                         }else{
                           showDialog(context: context, builder: (BuildContext context) {
                             return AlertDialog(
