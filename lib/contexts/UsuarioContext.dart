@@ -57,5 +57,13 @@ class UsuarioContext extends ChangeNotifier {
   }
   void adicionarRegistro(Registro registro){
     _usuario.registros.add(registro);
+    notifyListeners();
+  }
+  Usuario getUsuario(){
+    return _usuario;
+  }
+  void setUsuario(Usuario usuario){
+    _usuario  = usuario;
+    notifyListeners();
   }
 }

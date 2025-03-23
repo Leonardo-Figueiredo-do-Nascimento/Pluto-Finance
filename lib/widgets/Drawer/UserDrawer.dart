@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/pages/About/AboutPage.dart';
 import 'package:pluto_finance/pages/Login/LoginPage.dart';
+import 'package:pluto_finance/pages/UpdateUser/UpdateUserPage.dart';
 
 class UserDrawer extends StatefulWidget {
   const UserDrawer({super.key});
@@ -23,7 +24,7 @@ class _UserDrawerState extends State<UserDrawer> {
                 children: [
                   TextButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => AboutPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => UpdateUserPage()));
                     }, 
                     child: Row(
                       children: [

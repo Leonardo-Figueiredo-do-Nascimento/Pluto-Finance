@@ -7,15 +7,14 @@ class Usuario{
   String? senha;
   String? telefone;
   double saldoTotal = 0.00;
-  List<Registro> registros;
-
-  Usuario({
-    this.usuarioId,
+  List<Registro> registros = [];
+  
+  Usuario();
+  
+  Usuario.comParametros(
     this.nome,
     this.email,
     this.senha,
     this.telefone,
-    this.saldoTotal = 0.00,
-    this.registros = const [],
-  });
+  );
 }
