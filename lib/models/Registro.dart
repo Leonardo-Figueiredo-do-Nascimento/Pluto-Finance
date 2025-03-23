@@ -3,6 +3,7 @@ class Registro {
   int? usuarioId;
   String? tipo;
   double? quantia;
+  String? categoria;
   DateTime? dataRegistro;
 
   Registro({
@@ -10,6 +11,7 @@ class Registro {
     this.usuarioId,
     this.tipo,
     this.quantia,
+    this.categoria,
     this.dataRegistro,
   });
 }
