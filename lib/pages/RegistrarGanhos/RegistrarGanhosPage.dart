@@ -18,9 +18,14 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
   
   var quantiaController = TextEditingController(text: "");
   var dataController = TextEditingController(text: "");
-  var categoriaController = TextEditingController(text: "");
   String? selectedCategoria;
-  List<String> categoriasLst = ["Salário","Dividendos","Venda","Empréstimo"];
+  List<String> categoriasLst = ["Salário","Dividendos","Venda","Empréstimo","Outros"];
+
+  @override
+  void initState(){
+    super.initState();
+    dataController.text = DateFormat("dd/MM/yyyy").format(DateTime.now());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,81 +50,85 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
           children: [
             Column(
               children: [
+                Text("DEPOSITO",style: TextStyle(color: Colors.white,fontSize: 30)),
+                SizedBox(height: 80,),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Insira a quantia:",style: TextStyle(color: Colors.white,fontSize: 20)),
-                    TextField(
-                      style: TextStyle(color: Colors.white),
-                      controller: quantiaController,
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        if (value.isNotEmpty) {
-                          quantiaController.text = value.replaceAll(',', '.');
-                        }
-                      },
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(RegExp(r'^\d+([.,]\d{0,2})?$')),
-                        TextInputFormatter.withFunction((oldValue, newValue) {
-                          return newValue.copyWith(text: newValue.text.replaceAll('.', ','));
-                        }),
-                      ],
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'R\$0,00',  
-                        filled: true,
-                        fillColor: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 17,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Selecione a Categoria do Deposito:",style: TextStyle(color: Colors.white,fontSize: 20)),
-                    
-                    Container(
-                      width: 350,
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(5),                        
-                      ),
-                      child: DropdownButton2(
-                        hint: Text("Selecione uma opção", style: TextStyle(color: const Color.fromARGB(88, 255, 255, 255))),
-                        value: selectedCategoria,
-                        dropdownStyleData: DropdownStyleData(
-                          width: 330,
-                          padding: const EdgeInsets.symmetric(vertical: 6),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: const Color.fromARGB(255, 1, 0, 65),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Insira a quantia:",style: TextStyle(color: Colors.white,fontSize: 20)),
+                        TextField(
+                          style: TextStyle(color: Colors.white),
+                          controller: quantiaController,
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) {
+                            if (value.isNotEmpty) {
+                              quantiaController.text = value.replaceAll(',', '.');
+                            }
+                          },
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(RegExp(r'^\d+([.,]\d{0,2})?$')),
+                            TextInputFormatter.withFunction((oldValue, newValue) {
+                              return newValue.copyWith(text: newValue.text.replaceAll('.', ','));
+                            }),
+                          ],
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: 'R\$0,00',  
+                            filled: true,
+                            fillColor: Colors.black,
                           ),
-                          offset: const Offset(0, 8),
                         ),
-                        isExpanded: true, 
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            selectedCategoria = newValue;
-                          });
-                        },
-                        items: categoriasLst.map((String item) {
-                          return DropdownMenuItem<String>(
-                            value: item,
-                            child: Text(item, style: TextStyle(color: Colors.white)),
-                          );
-                        }).toList(),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
-                SizedBox(height: 17,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Data do Depósito:",style: TextStyle(color: Colors.white,fontSize: 20)),
-                    TextField(
+                    SizedBox(height: 17,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Selecione a Categoria do Deposito:",style: TextStyle(color: Colors.white,fontSize: 20)),
+                        
+                        Container(
+                          width: 350,
+                          padding: EdgeInsets.symmetric(horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Colors.black,
+                            borderRadius: BorderRadius.circular(5),                        
+                          ),
+                          child: DropdownButton2(
+                            hint: Text("Selecione uma opção", style: TextStyle(color: const Color.fromARGB(88, 255, 255, 255))),
+                            value: selectedCategoria,
+                            dropdownStyleData: DropdownStyleData(
+                              width: 330,
+                              padding: const EdgeInsets.symmetric(vertical: 6),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: const Color.fromARGB(255, 1, 0, 65),
+                              ),
+                              offset: const Offset(0, 8),
+                            ),
+                            isExpanded: true, 
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedCategoria = newValue;
+                              });
+                            },
+                            items: categoriasLst.map((String item) {
+                              return DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(item, style: TextStyle(color: Colors.white)),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 17,),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Data do Depósito:",style: TextStyle(color: Colors.white,fontSize: 20)),
+                        TextField(
                           controller: dataController,
                           style: const TextStyle(color: Colors.white,fontSize: 20),
                           decoration: const InputDecoration(   
@@ -129,33 +138,38 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
                               Icons.calendar_month,
                               color: Colors.white,
                             ),
-                            hintText: "dd/mm/yyyy",
+                            hintText: "dd/mm/aaaa",
                           ),
                           onTap: () async{
                             var date = await showDatePicker(
                               context: context, 
-                              firstDate: DateTime(1930,1,1),
-                              lastDate: DateTime(2020,1,1)  
+                              firstDate: DateTime(2010,1,1),
+                              lastDate: DateTime(2100,1,1)
                             );
                             if(date!=null){
                               dataController.text = DateFormat("dd/MM/yyyy").format(date);
                             }
                           }
                         )
+                      ],
+                    ),
                   ],
                 ),
-                SizedBox(height: 17,),
+                SizedBox(height: 120,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
                       onPressed: () {
-                        if(quantiaController.text!="" && categoriaController.text!="" && dataController.text!=""){
+                        if(quantiaController.text!="" && selectedCategoria!="" && dataController.text!=""){
                           Registro registro = new Registro();
+                          registro.registroId = usuarioContext.usuarioId;
                           registro.quantia = double.parse(quantiaController.text);
-                          registro.categoria = categoriaController.text;
+                          registro.categoria = selectedCategoria;
                           registro.tipo = "Ganho";
-
+                          registro.dataRegistro = DateFormat("dd/MM/yyyy").parse(dataController.text);
+                          usuarioContext.adicionarRegistro(registro);
+                          usuarioContext.adicionarSaldo(double.parse(quantiaController.text));
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Color.fromARGB(255, 54, 128, 44),

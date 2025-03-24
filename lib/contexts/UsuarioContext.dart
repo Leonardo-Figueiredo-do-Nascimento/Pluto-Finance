@@ -50,10 +50,8 @@ class UsuarioContext extends ChangeNotifier {
   }
 
   void removerSaldo(double valor) {
-    if (_usuario.saldoTotal >= valor) {
-      _usuario.saldoTotal -= valor;
-      notifyListeners();
-    }
+    _usuario.saldoTotal -= valor;
+    notifyListeners();
   }
   void adicionarRegistro(Registro registro){
     _usuario.registros.add(registro);

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
+import 'package:pluto_finance/pages/RegistrarDespesas/RegistrarDespesasPage.dart';
 import 'package:pluto_finance/pages/RegistrarGanhos/RegistrarGanhosPage.dart';
 import 'package:pluto_finance/widgets/Drawer/UserDrawer.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 55),
                   child: Text(
-                    "R\$ ${usuarioContext.saldoTotal.toStringAsFixed(2)}",
+                    NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format(usuarioContext.saldoTotal),
                     style: TextStyle(
                       fontSize: 26,
                       color: usuarioContext.saldoTotal < 0.0
@@ -88,7 +90,9 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(width: 10),
                     Expanded(
                       child: TextButton(
-                        onPressed: () {}, 
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>RegistrarDespesasPage()));
+                        }, 
                         child: Container(
                           height: 70,
                           decoration: BoxDecoration(
