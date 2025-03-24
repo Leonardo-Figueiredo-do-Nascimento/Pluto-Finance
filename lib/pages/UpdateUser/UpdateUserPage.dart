@@ -12,8 +12,6 @@ class UpdateUserPage extends StatefulWidget {
 
 class _UpdateUserPageState extends State<UpdateUserPage> {
 
-  late UsuarioContext usuarioContext;
-
   var nomeController = TextEditingController(text: "");
   var telefoneController = TextEditingController(text: "");
   var emailController = TextEditingController(text: "");

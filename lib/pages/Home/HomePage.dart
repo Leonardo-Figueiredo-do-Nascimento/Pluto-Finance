@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
+import 'package:pluto_finance/pages/RegistrarGanhos/RegistrarGanhosPage.dart';
 import 'package:pluto_finance/widgets/Drawer/UserDrawer.dart';
 import 'package:provider/provider.dart';
 
@@ -57,19 +58,7 @@ class _HomePageState extends State<HomePage> {
                     Expanded(
                       child: TextButton(
                         onPressed: () {
-                          showDialog(context: context, builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Text(usuarioContext.nome!,style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop(); // Fecha o alerta
-                                },
-                                child: const Text("OK"),
-                              ),
-                            ],
-                          );
-                        });
+                          Navigator.push(context, MaterialPageRoute(builder: (_)=>RegistrarGanhosPage()));
                         }, 
                         child: Container(
                           height: 70,
