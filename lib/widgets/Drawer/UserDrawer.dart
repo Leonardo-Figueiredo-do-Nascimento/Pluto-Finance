@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/pages/About/AboutPage.dart';
+import 'package:pluto_finance/pages/Insights/InsightsPage.dart';
 import 'package:pluto_finance/pages/Login/LoginPage.dart';
+import 'package:pluto_finance/pages/Orcamento/OrcamentoPage.dart';
 import 'package:pluto_finance/pages/Registros/RegistrosPage.dart';
 import 'package:pluto_finance/pages/UpdateUser/UpdateUserPage.dart';
 
@@ -38,7 +40,7 @@ class _UserDrawerState extends State<UserDrawer> {
                   Divider(),
                   TextButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => AboutPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => OrcamentoPage()));
                     }, 
                     child: Row(
                       children: [
@@ -51,7 +53,7 @@ class _UserDrawerState extends State<UserDrawer> {
                   Divider(),
                   TextButton(
                     onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => AboutPage()));
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => InsightsPage()));
                     }, 
                     child: Row(
                       children: [
