@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pluto_finance/models/Orcamento.dart';
 import 'package:pluto_finance/models/Registro.dart';
 import 'package:pluto_finance/models/Usuario.dart';
 
@@ -13,6 +14,7 @@ class UsuarioContext extends ChangeNotifier {
   String? get telefone => _usuario.telefone;
   double get saldoTotal => _usuario.saldoTotal;
   List<Registro> get registros => _usuario.registros;
+  List<Orcamento> get orcamentos => _usuario.orcamentos;
 
   void setUsuarioId(int id) {
     _usuario.usuarioId = id;

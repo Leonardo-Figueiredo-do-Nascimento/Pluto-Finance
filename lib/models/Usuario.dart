@@ -1,3 +1,4 @@
+import 'package:pluto_finance/models/Orcamento.dart';
 import 'package:pluto_finance/models/Registro.dart';
 
 class Usuario{
@@ -8,6 +9,7 @@ class Usuario{
   String? telefone;
   double saldoTotal = 0.00;
   List<Registro> registros = [];
+  List<Orcamento> orcamentos = [];
   
   Usuario();
   
