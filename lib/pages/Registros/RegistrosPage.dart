@@ -42,7 +42,7 @@ class _RegistrosPageState extends State<RegistrosPage> {
               children: [
                 Column(
                   children: [
-                    Text("Últimos Registros",style: TextStyle(color: Colors.white,fontSize: 30)),
+                    Text("Registros",style: TextStyle(color: Colors.white,fontSize: 30)),
                     Divider()
                   ],
                 ),
@@ -66,10 +66,11 @@ class _RegistrosPageState extends State<RegistrosPage> {
                               title: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                    NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
-                                        .format(usuarioContext.registros[index].quantia),
-                                    style: const TextStyle(color: Colors.white),
+                                  Expanded(
+                                    child: Text(
+                                      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format(usuarioContext.registros[index].quantia),
+                                      style: const TextStyle(color: Colors.white),
+                                    ),
                                   ),
                                   Text(
                                     DateFormat('dd/MM/yyyy').format(usuarioContext.registros[index].dataRegistro!),

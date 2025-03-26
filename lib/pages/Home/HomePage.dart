@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/pages/RegistrarDespesas/RegistrarDespesasPage.dart';
 import 'package:pluto_finance/pages/RegistrarGanhos/RegistrarGanhosPage.dart';
+import 'package:pluto_finance/pages/Registros/RegistrosPage.dart';
 import 'package:pluto_finance/widgets/Drawer/UserDrawer.dart';
 import 'package:provider/provider.dart';
 
@@ -41,16 +42,25 @@ class _HomePageState extends State<HomePage> {
                     color: const Color.fromARGB(166, 190, 155, 0),
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 55),
-                  child: Text(
-                    NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format(usuarioContext.saldoTotal),
-                    style: TextStyle(
-                      fontSize: 26,
-                      color: usuarioContext.saldoTotal < 0.0
-                          ? const Color.fromARGB(255, 197, 13, 0)
-                          : Colors.white,
-                      fontWeight: FontWeight.w900,
-                    ),
+                  padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Patrimônio:",style: TextStyle(color: Colors.white,fontSize: 16),),
+                      Divider(),
+                      Expanded(
+                        child: Text(
+                          NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format(usuarioContext.saldoTotal),
+                          style: TextStyle(
+                            fontSize: 26,
+                            color: usuarioContext.saldoTotal < 0.0
+                                ? const Color.fromARGB(255, 197, 13, 0)
+                                : Colors.white,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 20),
@@ -124,30 +134,70 @@ class _HomePageState extends State<HomePage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      "Últimos Registros",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w900,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          "Últimos Registros",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>RegistrosPage()));}, 
+                          child: Container(
+                            decoration: BoxDecoration(color: Colors.blue,borderRadius: BorderRadius.circular(20),boxShadow: [BoxShadow(color: Colors.white,spreadRadius: 2)]),
+                            padding: EdgeInsets.all(5),
+                            child: Text("Ver mais",style: TextStyle(color: Colors.white,fontSize: 16),),
+                          )
+                        )
+                      ],
                     ),
                     const Divider(),
-                    // Adicione uma lista para simular os registros
                     ListView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: 3, 
+                      itemCount: usuarioContext.registros.length < 3 ? usuarioContext.registros.length : 3, // Limite para 3
                       itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(
-                            "Registro ${index + 1}",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          subtitle: const Text(
-                            "Descrição do registro",
-                            style: TextStyle(color: Colors.grey),
-                          ),
+                        return Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12), // Arredondamento aplicado
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: usuarioContext.registros[index].tipo == "Ganho"
+                                      ? Color.fromARGB(255, 1, 92, 29)
+                                      : Color.fromARGB(255, 99, 3, 3),
+                                  borderRadius: BorderRadius.circular(12), // Arredonda o container
+                                ),
+                                child: ListTile(
+                                  title: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
+                                              .format(usuarioContext.registros[index].quantia),
+                                          style: const TextStyle(color: Colors.white),
+                                        ),
+                                      ),
+                                      Text(
+                                        DateFormat('dd/MM/yyyy').format(usuarioContext.registros[index].dataRegistro!),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                  subtitle: Text(
+                                    "${usuarioContext.registros[index].categoria}",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(height: 10,)
+                          ],
                         );
                       },
                     ),
