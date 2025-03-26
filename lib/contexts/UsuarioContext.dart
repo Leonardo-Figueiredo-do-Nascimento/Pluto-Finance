@@ -54,7 +54,21 @@ class UsuarioContext extends ChangeNotifier {
     notifyListeners();
   }
   void adicionarRegistro(Registro registro){
+    if(registro.tipo == "Ganho"){
+      adicionarSaldo(registro.quantia!);
+    } else {
+      removerSaldo(registro.quantia!);
+    }
     _usuario.registros.add(registro);
+    notifyListeners();
+  }
+  void removerRegistro(Registro registro){
+    if(registro.tipo == "Ganho"){
+      removerSaldo(registro.quantia!);
+    } else {
+      adicionarSaldo(registro.quantia!);
+    }
+    _usuario.registros.remove(registro);
     notifyListeners();
   }
   Usuario getUsuario(){

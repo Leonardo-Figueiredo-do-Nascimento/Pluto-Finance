@@ -169,7 +169,6 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
                           registro.tipo = "Ganho";
                           registro.dataRegistro = DateFormat("dd/MM/yyyy").parse(dataController.text);
                           usuarioContext.adicionarRegistro(registro);
-                          usuarioContext.adicionarSaldo(double.parse(quantiaController.text));
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Color.fromARGB(255, 54, 128, 44),

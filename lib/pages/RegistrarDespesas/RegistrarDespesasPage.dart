@@ -168,7 +168,6 @@ class _RegistrarDespesasPageState extends State<RegistrarDespesasPage> {
                           registro.tipo = "Despesa";
                           registro.dataRegistro = DateFormat("dd/MM/yyyy").parse(dataController.text);
                           usuarioContext.adicionarRegistro(registro);
-                          usuarioContext.removerSaldo(double.parse(quantiaController.text));
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Color.fromARGB(255, 54, 128, 44),
