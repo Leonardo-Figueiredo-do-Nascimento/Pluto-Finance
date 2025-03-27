@@ -7,6 +7,6 @@ class Orcamento {
   Orcamento({
     this.orcamento,
     this.orcamentoMes,
-    this.maximoDespesas
+    this.maximoDespesas 
   });
 }

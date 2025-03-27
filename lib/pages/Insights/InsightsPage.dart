@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:pluto_finance/widgets/PieChart/CustomPieChart.dart';
 import 'package:provider/provider.dart';
 
 class InsightsPage extends StatefulWidget {
@@ -14,7 +15,12 @@ class _InsightsPageState extends State<InsightsPage> {
   @override
   Widget build(BuildContext context) {
     final usuarioContext = context.read<UsuarioContext>();
-
+    final registros = usuarioContext.registros;
+    final ganhosRegistros = registros.where((registro) => registro.tipo == 'Ganho').toList();
+    final despesasRegistros = registros.where((registro) => registro.tipo == 'Despesa').toList();
+    final ganhosTotal = ganhosRegistros.fold(0.0, (soma, registro) => soma + (registro.quantia!));
+    final despesasTotal = despesasRegistros.fold(0.0, (soma, registro) => soma + (registro.quantia ?? 0.0));
+    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -22,10 +28,9 @@ class _InsightsPageState extends State<InsightsPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Substitui a tela atual pela nova tela usando pushReplacement
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()), // Substitua 'NovaTela' pela sua tela de destino
+              MaterialPageRoute(builder: (context) => HomePage()),
             );
           },
         ),
@@ -40,7 +45,16 @@ class _InsightsPageState extends State<InsightsPage> {
                 Column(
                   children: [
                     Text("Análise",style: TextStyle(color: Colors.white,fontSize: 30)),
-                    Divider()
+                    Divider(),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Container(
+                      height: 300,
+                      width: 300,
+                      child: CustomPieChart(registros: ganhosRegistros)
+                    )
                   ],
                 ),
               ],
