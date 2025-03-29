@@ -16,9 +16,9 @@ class CustomPieChart extends StatelessWidget {
   ];
   final List<Color> categoriaDespesasColors = [
     Colors.red,
-    const Color.fromARGB(255, 253, 65, 65),
+    const Color.fromARGB(255, 114, 9, 9),
     Colors.orange,
-    const Color.fromARGB(255, 255, 251, 1),
+    const Color.fromARGB(255, 161, 159, 0),
     const Color.fromARGB(255, 0, 0, 0),
   ];
 
@@ -38,7 +38,7 @@ class CustomPieChart extends StatelessWidget {
       sections.add(
         PieChartSectionData(
           value: (registro.quantia ?? 0) / total * 100, 
-          title: "${registro.categoria}: ${registro.quantia!.toStringAsFixed(2)}",
+          title: "R\$${registro.quantia!.toStringAsFixed(2)}",
           color: color,
           radius: 50,
           titleStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
@@ -48,15 +48,67 @@ class CustomPieChart extends StatelessWidget {
 
     return sections;
   }
-  
+
+  Widget _buildLegend() {
+    Map<String, Color> legendItems = {}; // Dicionário para armazenar as categorias e cores
+
+    for (int i = 0; i < registros.length; i++) {
+      final registro = registros[i];
+      final color = registro.tipo == "Ganho"
+          ? categoriaGanhosColors[i % categoriaGanhosColors.length]
+          : categoriaDespesasColors[i % categoriaDespesasColors.length];
+
+      legendItems[registro.categoria!] = color;
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: legendItems.entries.map((entry) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 12,
+                height: 12,
+                decoration: BoxDecoration(
+                  color: entry.value,
+                  shape: BoxShape.circle,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(entry.key, style: const TextStyle(fontSize: 14,color: Colors.white)),
+            ],
+          ),
+        );
+      }).toList(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return PieChart(
-      PieChartData(
-        sections: _generateSections(),
-        centerSpaceRadius: 40,
-        sectionsSpace: 2,
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          width: 150,
+          height: 200,
+          child: PieChart(
+            PieChartData(
+              sections: _generateSections(),
+              centerSpaceRadius: 40,
+              sectionsSpace: 2,
+            ),
+          ),
+        ),
+        const SizedBox(width: 30),
+        SizedBox(
+          height: 200, // Mantém a altura igual à do gráfico
+          child: Center(child: _buildLegend()), // Centraliza a legenda dentro do SizedBox
+        ),
+      ],
     );
   }
 }

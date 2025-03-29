@@ -161,7 +161,7 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
                   children: [
                     TextButton(
                       onPressed: () {
-                        if(quantiaController.text!="" && selectedCategoria!="" && dataController.text!=""){
+                        if(quantiaController.text!="" && selectedCategoria!=null && dataController.text!=""){
                           Registro registro = new Registro();
                           registro.registroId = usuarioContext.usuarioId;
                           registro.quantia = double.parse(quantiaController.text);

@@ -109,35 +109,7 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                             )
                           ],
                         ),
-                        SizedBox(height: 20,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Máximo de despesas (opcional)",style: TextStyle(color: Colors.white,fontSize: 16),),
-                            TextField(
-                              style: TextStyle(color: Colors.white),
-                              controller: quantiaPatrimonioController,
-                              keyboardType: TextInputType.number,
-                              onChanged: (value) {
-                                if (value.isNotEmpty) {
-                                  quantiaPatrimonioController.text = value.replaceAll(',', '.');
-                                }
-                              },
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(r'^\d+([.,]\d{0,2})?$')),
-                                TextInputFormatter.withFunction((oldValue, newValue) {
-                                  return newValue.copyWith(text: newValue.text.replaceAll('.', ','));
-                                }),
-                              ],
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'R\$0,00',  
-                                filled: true,
-                                fillColor: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
+                        SizedBox(height: 20,),                        
                       ],
                     ),
                     SizedBox(height: 100,),

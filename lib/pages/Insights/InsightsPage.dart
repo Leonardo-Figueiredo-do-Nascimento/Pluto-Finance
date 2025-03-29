@@ -44,19 +44,35 @@ class _InsightsPageState extends State<InsightsPage> {
               children: [
                 Column(
                   children: [
-                    Text("Análise",style: TextStyle(color: Colors.white,fontSize: 30)),
+                    Text("Análise",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w900)),
                     Divider(),
                   ],
                 ),
-                Column(
+                SizedBox(height: 100,),
+                ganhosRegistros.isNotEmpty ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text("Ganhos",style: TextStyle(color: Colors.white,fontSize: 18)),
+                    Divider(),
                     Container(
                       height: 300,
                       width: 300,
                       child: CustomPieChart(registros: ganhosRegistros)
                     )
                   ],
-                ),
+                ) : Column(),
+                despesasRegistros.isNotEmpty ? Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Despesas",style: TextStyle(color: Colors.white,fontSize: 18)),
+                    Divider(),
+                    Container(
+                      height: 300,
+                      width: 300,
+                      child: CustomPieChart(registros: despesasRegistros)
+                    )
+                  ],
+                ) : Column(),
               ],
             ),
           )
