@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
+import 'package:pluto_finance/models/Orcamento.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
 import 'package:provider/provider.dart';
 
@@ -15,7 +16,7 @@ class OrcamentoPage extends StatefulWidget {
 
 class _OrcamentoPageState extends State<OrcamentoPage> {
 
-  var quantiaPatrimonioController = TextEditingController(text: "");
+  var orcamentoController = TextEditingController(text: "");
   var mesController = TextEditingController(text: "");
 
   @override
@@ -57,11 +58,11 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                             Text("Orçamento do mês",style: TextStyle(color: Colors.white,fontSize: 16),),
                             TextField(
                               style: TextStyle(color: Colors.white),
-                              controller: quantiaPatrimonioController,
+                              controller: orcamentoController,
                               keyboardType: TextInputType.number,
                               onChanged: (value) {
                                 if (value.isNotEmpty) {
-                                  quantiaPatrimonioController.text = value.replaceAll(',', '.');
+                                  orcamentoController.text = value.replaceAll(',', '.');
                                 }
                               },
                               inputFormatters: [
@@ -115,11 +116,17 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                     SizedBox(height: 100,),
                     TextButton(
                       onPressed: () {
-                        if(quantiaPatrimonioController.text!="" && mesController.text!=""){
+                        if(orcamentoController.text!="" && mesController.text!=""){
+                          Orcamento orcamento = new Orcamento();
+                          orcamento.orcamento = double.parse(orcamentoController.text);
+                          orcamento.orcamentoMes = DateFormat("MM/yyyy").parse(mesController.text);
+
+                          usuarioContext.adicionarOrcamento(orcamento);
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Color.fromARGB(255, 54, 128, 44),
-                              content: const Text('Deposito registrado.',style: TextStyle(fontSize: 20,color: Colors.white),),
+                              content: const Text('Orcamento registrado.',style: TextStyle(fontSize: 20,color: Colors.white),),
                               duration: const Duration(seconds: 2),
                             ),
                           );

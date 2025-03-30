@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
 import 'package:pluto_finance/widgets/PieChart/CustomPieChart.dart';
+import 'package:pluto_finance/widgets/ProgressBar/CustomProgressBar.dart';
 import 'package:provider/provider.dart';
 
 class InsightsPage extends StatefulWidget {
@@ -16,9 +17,9 @@ class _InsightsPageState extends State<InsightsPage> {
   Widget build(BuildContext context) {
     final usuarioContext = context.read<UsuarioContext>();
     final registros = usuarioContext.registros;
+    final orcamento = usuarioContext.getOrcamentoMesAtual();
     final ganhosRegistros = registros.where((registro) => registro.tipo == 'Ganho').toList();
     final despesasRegistros = registros.where((registro) => registro.tipo == 'Despesa').toList();
-    final ganhosTotal = ganhosRegistros.fold(0.0, (soma, registro) => soma + (registro.quantia!));
     final despesasTotal = despesasRegistros.fold(0.0, (soma, registro) => soma + (registro.quantia ?? 0.0));
     
     return Scaffold(
@@ -44,11 +45,20 @@ class _InsightsPageState extends State<InsightsPage> {
               children: [
                 Column(
                   children: [
-                    Text("Análise",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w900)),
-                    Divider(),
+                    Text("Análise",style: TextStyle(color: Colors.white,fontSize: 30,fontWeight: FontWeight.w900)),                
                   ],
                 ),
-                SizedBox(height: 100,),
+                SizedBox(height: 50,),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Orçamento",style: TextStyle(color: Colors.white,fontSize: 18)),
+                    Divider(),
+                    SizedBox(height: 50,),
+                    CustomProgressBar(despesasTotais: despesasTotal, orcamento: orcamento),
+                  ],
+                ),
+                SizedBox(height: 50,),
                 ganhosRegistros.isNotEmpty ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

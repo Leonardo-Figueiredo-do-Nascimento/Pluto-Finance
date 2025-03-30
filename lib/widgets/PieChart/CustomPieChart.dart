@@ -7,37 +7,46 @@ class CustomPieChart extends StatelessWidget {
 
   CustomPieChart({required this.registros, super.key});
 
-  final List<Color> categoriaGanhosColors = [
-    Colors.blue,
-    Colors.green,
-    Colors.orange,
-    const Color.fromARGB(255, 54, 244, 235),
-    Colors.purple,
-  ];
-  final List<Color> categoriaDespesasColors = [
-    Colors.red,
-    const Color.fromARGB(255, 114, 9, 9),
-    Colors.orange,
-    const Color.fromARGB(255, 161, 159, 0),
-    const Color.fromARGB(255, 0, 0, 0),
-  ];
+  // Cores para categorias de Ganhos
+  final Map<String, Color> categoriaGanhosColors = {
+    "Salário": Colors.blue,
+    "Dividendos": Colors.green,
+    "Venda": Colors.orange,
+    "Empréstimo": const Color.fromARGB(255, 54, 244, 235),
+    "Outros": Colors.purple,
+  };
+
+  // Cores para categorias de Despesas
+  final Map<String, Color> categoriaDespesasColors = {
+    "Moradia": Colors.red,
+    "Alimentação": const Color.fromARGB(255, 114, 9, 9),
+    "Transporte": Colors.orange,
+    "Lazer": const Color.fromARGB(255, 161, 159, 0),
+    "Outros": const Color.fromARGB(255, 0, 0, 0),
+  };
 
   List<PieChartSectionData> _generateSections() {
     if (registros.isEmpty) return [];
 
     double total = registros.fold(0, (sum, item) => sum + (item.quantia ?? 0));
-    
+
     List<PieChartSectionData> sections = [];
-    
+
     for (int i = 0; i < registros.length; i++) {
       final registro = registros[i];
-      final color = registro.tipo == "Ganho" 
-          ? categoriaGanhosColors[i % categoriaGanhosColors.length] 
-          : categoriaDespesasColors[i % categoriaDespesasColors.length];
+      final categoria = registro.categoria;
+
+      Color color;
+      // Verifica se é um "Ganho" ou "Despesa" e pega a cor baseada na categoria
+      if (registro.tipo == "Ganho") {
+        color = categoriaGanhosColors[categoria] ?? categoriaGanhosColors["Outros"]!;
+      } else {
+        color = categoriaDespesasColors[categoria] ?? categoriaDespesasColors["Outros"]!;
+      }
 
       sections.add(
         PieChartSectionData(
-          value: (registro.quantia ?? 0) / total * 100, 
+          value: (registro.quantia ?? 0) / total * 100,
           title: "R\$${registro.quantia!.toStringAsFixed(2)}",
           color: color,
           radius: 50,
@@ -54,11 +63,17 @@ class CustomPieChart extends StatelessWidget {
 
     for (int i = 0; i < registros.length; i++) {
       final registro = registros[i];
-      final color = registro.tipo == "Ganho"
-          ? categoriaGanhosColors[i % categoriaGanhosColors.length]
-          : categoriaDespesasColors[i % categoriaDespesasColors.length];
+      final categoria = registro.categoria;
 
-      legendItems[registro.categoria!] = color;
+      Color color;
+      // Verifica se é um "Ganho" ou "Despesa" e pega a cor baseada na categoria
+      if (registro.tipo == "Ganho") {
+        color = categoriaGanhosColors[categoria] ?? categoriaGanhosColors["Outros"]!;
+      } else {
+        color = categoriaDespesasColors[categoria] ?? categoriaDespesasColors["Outros"]!;
+      }
+
+      legendItems[categoria!] = color;
     }
 
     return Column(
@@ -78,7 +93,7 @@ class CustomPieChart extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Text(entry.key, style: const TextStyle(fontSize: 14,color: Colors.white)),
+              Text(entry.key, style: const TextStyle(fontSize: 14, color: Colors.white)),
             ],
           ),
         );

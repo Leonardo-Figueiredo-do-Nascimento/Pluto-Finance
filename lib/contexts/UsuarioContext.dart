@@ -73,6 +73,23 @@ class UsuarioContext extends ChangeNotifier {
     _usuario.registros.remove(registro);
     notifyListeners();
   }
+  void adicionarOrcamento(Orcamento _orcamento){
+    _usuario.orcamentos.add(_orcamento);
+    notifyListeners();
+  }
+  void removerOrcamento(Orcamento _orcamento){
+    _usuario.orcamentos.remove(_orcamento);
+    notifyListeners();
+  }
+  double getOrcamentoMesAtual() {
+    DateTime now = DateTime.now();
+    Orcamento? orcamentoAtual = _usuario.orcamentos.firstWhere(
+      (orcamento) => 
+        orcamento.orcamentoMes?.year == now.year &&
+        orcamento.orcamentoMes?.month == now.month,
+    );
+    return orcamentoAtual.orcamento!;
+  }
   Usuario getUsuario(){
     return _usuario;
   }
