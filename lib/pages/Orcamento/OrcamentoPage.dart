@@ -116,35 +116,83 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                     SizedBox(height: 100,),
                     TextButton(
                       onPressed: () {
-                        if(orcamentoController.text!="" && mesController.text!=""){
-                          Orcamento orcamento = new Orcamento();
+                        if (orcamentoController.text.isNotEmpty && mesController.text.isNotEmpty) {
+                          // Parse para o orçamento
+                          Orcamento orcamento = Orcamento();
                           orcamento.orcamento = double.parse(orcamentoController.text);
                           orcamento.orcamentoMes = DateFormat("MM/yyyy").parse(mesController.text);
 
-                          usuarioContext.adicionarOrcamento(orcamento);
+                          // Verificar se já existe orçamento para o mesmo mês
+                          bool existeOrcamento = usuarioContext.orcamentos.any((element) =>
+                              DateFormat("MM/yyyy").format(element.orcamentoMes!) == DateFormat("MM/yyyy").format(orcamento.orcamentoMes!));
 
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Color.fromARGB(255, 54, 128, 44),
-                              content: const Text('Orcamento registrado.',style: TextStyle(fontSize: 20,color: Colors.white),),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomePage()));
-                        }else{
-                          showDialog(context: context, builder: (BuildContext context) {
-                            return AlertDialog(
-                              content: Text("Preencha os campos corretamente",style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.of(context).pop(); // Fecha o alerta
-                                  },
-                                  child: const Text("OK"),
-                                ),
-                              ],
+                          if (existeOrcamento) {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Orçamento já existe"),
+                                  content: const Text("Já existe um orçamento para este mês. Deseja atualizar?"),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () {
+                                        // Atualizar o orçamento
+                                        usuarioContext.orcamentos.removeWhere((element) =>
+                                            DateFormat("MM/yyyy").format(element.orcamentoMes!) == DateFormat("MM/yyyy").format(orcamento.orcamentoMes!));
+                                        usuarioContext.adicionarOrcamento(orcamento);
+
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            backgroundColor: Color.fromARGB(255, 54, 128, 44),
+                                            content: const Text('Orçamento atualizado.', style: TextStyle(fontSize: 20, color: Colors.white)),
+                                            duration: const Duration(seconds: 2),
+                                          ),
+                                        );
+
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePage()));
+                                      },
+                                      child: const Text("Sim"),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop(); 
+                                      },
+                                      child: const Text("Não"),
+                                    ),
+                                  ],
+                                );
+                              },
                             );
-                          });
+                          } else {
+                            usuarioContext.adicionarOrcamento(orcamento);
+
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                backgroundColor: Color.fromARGB(255, 54, 128, 44),
+                                content: const Text('Orçamento registrado.', style: TextStyle(fontSize: 20, color: Colors.white)),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => HomePage()));
+                          }
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: const Text("Preencha os campos corretamente", style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop(); // Fecha o alerta
+                                    },
+                                    child: const Text("OK"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
                         }
                       },
                       style: TextButton.styleFrom(
@@ -152,10 +200,10 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
-                        backgroundColor: Color.fromARGB(255, 54, 128, 44), 
-                        foregroundColor: Colors.white, 
+                        backgroundColor: Color.fromARGB(255, 54, 128, 44),
+                        foregroundColor: Colors.white,
                       ),
-                      child: Text("Registrar orçamento",style: TextStyle(fontSize: 16)),
+                      child: const Text("Registrar orçamento", style: TextStyle(fontSize: 16)),
                     )
                   ],
                 ),

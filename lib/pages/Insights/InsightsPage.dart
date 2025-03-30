@@ -49,7 +49,7 @@ class _InsightsPageState extends State<InsightsPage> {
                   ],
                 ),
                 SizedBox(height: 50,),
-                Column(
+                usuarioContext.orcamentos.isNotEmpty ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("Orçamento",style: TextStyle(color: Colors.white,fontSize: 18)),
@@ -57,7 +57,7 @@ class _InsightsPageState extends State<InsightsPage> {
                     SizedBox(height: 50,),
                     CustomProgressBar(despesasTotais: despesasTotal, orcamento: orcamento),
                   ],
-                ),
+                ) : Column(),
                 SizedBox(height: 50,),
                 ganhosRegistros.isNotEmpty ? Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
