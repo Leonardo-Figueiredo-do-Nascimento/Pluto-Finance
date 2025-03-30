@@ -90,8 +90,23 @@ class _LoginPageState extends State<LoginPage> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (_) => HomePage()));
+                    if(emailController.text!="" && senhaController.text != "") {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                    } else{
+                      showDialog(context: context, builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text("Email ou senha inválidos",style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Fecha o alerta
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        );
+                      });
+                    }
                   },
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
