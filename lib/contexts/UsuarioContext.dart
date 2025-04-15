@@ -84,9 +84,10 @@ class UsuarioContext extends ChangeNotifier {
   double getOrcamentoMesAtual() {
     DateTime now = DateTime.now();
     Orcamento? orcamentoAtual = _usuario.orcamentos.firstWhere(
-      (orcamento) => 
-        orcamento.orcamentoMes?.year == now.year &&
-        orcamento.orcamentoMes?.month == now.month,
+      (orcamento) =>
+          orcamento.orcamentoMes?.year == now.year &&
+          orcamento.orcamentoMes?.month == now.month,
+      orElse: () => Orcamento(orcamentoMes: now, orcamento: 0.0), // fallback
     );
     return orcamentoAtual.orcamento!;
   }

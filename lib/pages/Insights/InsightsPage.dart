@@ -19,8 +19,8 @@ class _InsightsPageState extends State<InsightsPage> {
     final registros = usuarioContext.registros;
     final orcamento = usuarioContext.getOrcamentoMesAtual();
     final ganhosRegistros = registros.where((registro) => registro.tipo == 'Ganho').toList();
-    final despesasRegistros = registros.where((registro) => registro.tipo == 'Despesa').toList();
-    final despesasTotal = despesasRegistros.fold(0.0, (soma, registro) => soma + (registro.quantia ?? 0.0));
+    final  despesasRegistros = registros.where((registro) => registro.tipo == 'Despesa').toList();
+    double despesasTotal = despesasRegistros.fold(0.0, (soma, registro) => soma + (registro.quantia ?? 0.0));
     
     return Scaffold(
       appBar: AppBar(
