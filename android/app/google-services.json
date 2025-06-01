@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1075193599725",
+    "project_id": "pluto-finance-5eed2",
+    "storage_bucket": "pluto-finance-5eed2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1075193599725:android:693162424c7cc9ab651ee4",
+        "android_client_info": {
+          "package_name": "com.example.pluto_finance"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5RBWuQ9Gmm26xU5K3feVZ_ArQoWBlihg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

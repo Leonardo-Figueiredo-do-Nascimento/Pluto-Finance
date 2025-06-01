@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:pluto_finance/services/Authentication/FirebaseAuthentication.dart';
 import 'package:provider/provider.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -18,9 +19,10 @@ class _SignUpPageState extends State<SignUpPage> {
   var senhaConfirmacaoController = TextEditingController(text: "");
   bool senhaVisivel = true;
 
+  final firebaseAuthentication = FirebaseAuthentication();
+
   @override
   Widget build(BuildContext context) {
-
     
     final usuarioContext = context.read<UsuarioContext>();
 
@@ -145,15 +147,21 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 SizedBox(height: 17,),
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
 
-                    if(nomeController.text!="" && telefoneController.text!="" && emailController.text!="" && senhaController.text!="" && senhaConfirmacaoController.text!=""){
+                    if(nomeController.text!="" && telefoneController.text!="" && emailController.text!="" && (senhaController.text!="" && senhaController.text.length>=6) && (senhaConfirmacaoController.text!="" && senhaConfirmacaoController.text.length>=6)){
                       if(senhaController.text == senhaConfirmacaoController.text) {
                         usuarioContext.setNome(nomeController.text);
                         usuarioContext.setEmail(emailController.text);
                         usuarioContext.setSenha(senhaController.text);
                         usuarioContext.setTelefone(telefoneController.text);
-                        Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                        String? error = await firebaseAuthentication.register(emailController.text, senhaController.text,nomeController.text,telefoneController.text);
+                        if (error != null) {
+                          print("Erro ao cadastrar: $error");
+                        } else {
+                          Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                        }
+                        
                       } else {
                         showDialog(context: context, builder: (BuildContext context) {
                           return AlertDialog(
@@ -172,7 +180,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     }else{
                       showDialog(context: context, builder: (BuildContext context) {
                         return AlertDialog(
-                          content: Text("Preencha os campos corretamente",style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                          content: Text((senhaController.text.length<6 || senhaConfirmacaoController.text.length<6 ) ? "A senha deve ter no minimo 6 caracteres!": "Preencha os campos corretamente",style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500)),
                           actions: [
                             TextButton(
                               onPressed: () {

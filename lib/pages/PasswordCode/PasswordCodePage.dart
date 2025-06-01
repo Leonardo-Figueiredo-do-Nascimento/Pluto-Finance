@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:pluto_finance/services/Authentication/FirebaseAuthentication.dart';
 
 class PasswordCodePage extends StatefulWidget {
   const PasswordCodePage({super.key});
@@ -12,6 +13,8 @@ class PasswordCodePage extends StatefulWidget {
 class _PasswordCodePageState extends State<PasswordCodePage> {
   var codigoController = TextEditingController();
   bool isButtonEnabled = false;
+
+  final firebaseAuthentication = FirebaseAuthentication();
 
   @override
   void initState() {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pluto_finance/pages/ForgotPassword/ForgotPasswordPage.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
 import 'package:pluto_finance/pages/SignUp/SignUpPage.dart';
+import 'package:pluto_finance/services/Authentication/FirebaseAuthentication.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -16,6 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   var senhaController = TextEditingController(text: "");
   bool senhaVisivel = true;
   
+  final firebaseAuthentication = FirebaseAuthentication();
+
   @override
   Widget build(BuildContext context) {
 
@@ -89,9 +92,26 @@ class _LoginPageState extends State<LoginPage> {
             Column(
               children: [
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if(emailController.text!="" && senhaController.text != "") {
-                      Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                      String? error = await firebaseAuthentication.login(emailController.text, senhaController.text);
+                      if (error != null) {
+                        showDialog(context: context, builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Text("Erro ao fazer login: ${error}",style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(); // Fecha o alerta
+                              },
+                              child: const Text("OK"),
+                            ),
+                          ],
+                        );
+                      });
+                      } else {
+                        Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                      }
                     } else{
                       showDialog(context: context, builder: (BuildContext context) {
                         return AlertDialog(

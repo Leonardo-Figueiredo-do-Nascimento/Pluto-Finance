@@ -1,9 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
+import 'package:pluto_finance/firebase_options.dart';
 import 'package:pluto_finance/pages/Login/LoginPage.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
   runApp(
     MultiProvider(
       providers: [

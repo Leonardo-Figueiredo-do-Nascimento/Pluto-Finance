@@ -19,4 +19,14 @@ class Usuario{
     this.senha,
     this.telefone,
   );
+
+  factory Usuario.fromJson(Map<String, dynamic> json) {
+    return Usuario()
+      ..usuarioId = json['uid']
+      ..nome = json['nome']
+      ..email = json['email']
+      ..senha = json['senha']
+      ..telefone = json['telefone']
+      ..saldoTotal = (json['saldoTotal'] ?? 0).toDouble();
+  }
 }
