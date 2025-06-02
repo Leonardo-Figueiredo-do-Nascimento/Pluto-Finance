@@ -1,12 +1,11 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/models/Registro.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
 import 'package:pluto_finance/services/RegistroService/RegistroService.dart';
-import 'package:provider/provider.dart';
 
 class RegistrarDespesasPage extends StatefulWidget {
   const RegistrarDespesasPage({super.key});
@@ -21,6 +20,8 @@ class _RegistrarDespesasPageState extends State<RegistrarDespesasPage> {
   String? selectedCategoria;
   List<String> categoriasLst = ["Moradia","Alimentação","Transporte","Lazer","Outros"];
   final registroService = RegistroService();
+  late final String userUid = FirebaseAuth.instance.currentUser!.uid;
+  
   @override
   void initState(){
     super.initState();
@@ -29,8 +30,6 @@ class _RegistrarDespesasPageState extends State<RegistrarDespesasPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    final usuarioContext = context.read<UsuarioContext>();
 
     return Scaffold(
       appBar: AppBar(
@@ -163,12 +162,13 @@ class _RegistrarDespesasPageState extends State<RegistrarDespesasPage> {
                       onPressed: () {
                         if(quantiaController.text!="" && selectedCategoria!=null && dataController.text!=""){
                           Registro registro = new Registro();
-                          registro.registroId = usuarioContext.usuarioId;
+                          registro.usuarioId = userUid;
                           registro.quantia = double.parse(quantiaController.text);
                           registro.categoria = selectedCategoria;
                           registro.tipo = "Despesa";
                           registro.dataRegistro = DateFormat("dd/MM/yyyy").parse(dataController.text);
-                          usuarioContext.adicionarRegistro(registro);
+                          //usuarioContext.adicionarRegistro(registro);
+                          registroService.adicionarRegistro(registro);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Color.fromARGB(255, 54, 128, 44),

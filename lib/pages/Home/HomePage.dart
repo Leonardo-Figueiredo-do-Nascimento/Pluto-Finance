@@ -34,6 +34,12 @@ class _HomePageState extends State<HomePage> {
   void carregarUsuario() async {
     Usuario? usuario = await usuarioService.buscarUsuarioPorId(userUid);
     List<Registro?> registros = await registrosService.listarRegistrosPorUsuario(userUid);
+    print(usuario);
+    print(usuario!.email);
+    print(usuario!.nome);
+    print(usuario!.senha);
+    print(usuario!.saldoTotal);
+    print(registros.length);
     List<Orcamento?> orcamento = await orcamentoService.listarOrcamentosPorUsuario(userUid);
     if (usuario != null) {
       usuario.registros = registros.whereType<Registro>().toList();
@@ -43,13 +49,18 @@ class _HomePageState extends State<HomePage> {
       usuarioContext.setUsuario(usuario); 
     }
   }
+  
+  @override
+  void initState() {
+    super.initState();
+    carregarUsuario();
+  }
 
   @override
   Widget build(BuildContext context) {
 
     final usuarioContext = context.read<UsuarioContext>();
     
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,

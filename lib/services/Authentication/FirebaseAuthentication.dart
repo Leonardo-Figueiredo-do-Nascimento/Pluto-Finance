@@ -16,7 +16,9 @@ class FirebaseAuthentication {
           "uid": res.user!.uid.toString(),
           "nome": nome,
           "telefone": telefone,
-          "saldoTotal": 0.00
+          "saldoTotal": 0.00, 
+          "email": email,
+          "senha": password
         });
       });
       return null; // sucesso

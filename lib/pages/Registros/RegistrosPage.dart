@@ -107,6 +107,7 @@ class _RegistrosPageState extends State<RegistrosPage> {
                                             TextButton(
                                               child: Text('Confirmar'),
                                               onPressed: () {
+                                                registroService.deletarRegistro(usuarioContext.registros[index].registroId!);
                                                 usuarioContext.removerRegistro(usuarioContext.registros[index]);
                                                 Navigator.of(context).pop();
                                                 setState(() {});

@@ -43,11 +43,17 @@ class UsuarioService {
   }
 
   // READ por ID
-  Future<Usuario?> buscarUsuarioPorId(String docId) async {
-    DocumentSnapshot doc = await _usuariosRef.doc(docId).get();
-    if (doc.exists) {
-      return Usuario.fromJson(doc.data() as Map<String, dynamic>);
+  Future<Usuario?> buscarUsuarioPorId(String uid) async {
+  try {
+    final snapshot = await _usuariosRef.where('uid', isEqualTo: uid).limit(1).get();
+    if (snapshot.docs.isNotEmpty) {
+      final data = snapshot.docs.first.data() as Map<String, dynamic>;
+      return Usuario.fromJson(data);
     }
     return null;
+  } catch (e) {
+    print('Erro ao buscar usuário por UID: $e');
+    return null;
   }
+}
 }
