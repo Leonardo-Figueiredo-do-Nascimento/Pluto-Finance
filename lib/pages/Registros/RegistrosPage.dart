@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:pluto_finance/services/RegistroService/RegistroService.dart';
 import 'package:provider/provider.dart';
 
 class RegistrosPage extends StatefulWidget {
@@ -13,6 +14,8 @@ class RegistrosPage extends StatefulWidget {
 
 class _RegistrosPageState extends State<RegistrosPage> {
 
+  final registroService = RegistroService();
+  
   @override
   Widget build(BuildContext context) {
 

@@ -1,6 +1,6 @@
 class Orcamento {
-  int? orcamentoId;
-  int? usuarioId;
+  String? orcamentoId;
+  String? usuarioId;
   double? orcamento;
   DateTime? orcamentoMes;
 
@@ -15,5 +15,14 @@ class Orcamento {
       ..usuarioId = json['usuarioId']
       ..orcamento = json['orcamento']
       ..orcamentoMes = json['orcamentoMes'];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'orcamentoId': orcamentoId,
+      'usuarioId': usuarioId,
+      'orcamento': orcamento,
+      'orcamentoMes': orcamentoMes,
+    };
   }
 }

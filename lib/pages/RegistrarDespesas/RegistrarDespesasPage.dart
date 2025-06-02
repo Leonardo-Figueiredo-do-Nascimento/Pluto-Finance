@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/models/Registro.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:pluto_finance/services/RegistroService/RegistroService.dart';
 import 'package:provider/provider.dart';
 
 class RegistrarDespesasPage extends StatefulWidget {
@@ -19,7 +20,7 @@ class _RegistrarDespesasPageState extends State<RegistrarDespesasPage> {
   var dataController = TextEditingController(text: "");
   String? selectedCategoria;
   List<String> categoriasLst = ["Moradia","Alimentação","Transporte","Lazer","Outros"];
-
+  final registroService = RegistroService();
   @override
   void initState(){
     super.initState();

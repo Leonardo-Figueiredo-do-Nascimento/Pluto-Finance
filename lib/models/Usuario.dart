@@ -2,7 +2,7 @@ import 'package:pluto_finance/models/Orcamento.dart';
 import 'package:pluto_finance/models/Registro.dart';
 
 class Usuario{
-  int? usuarioId;
+  String? usuarioId;
   String? nome;
   String? email;
   String? senha;
@@ -28,5 +28,16 @@ class Usuario{
       ..senha = json['senha']
       ..telefone = json['telefone']
       ..saldoTotal = (json['saldoTotal'] ?? 0).toDouble();
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'uid': usuarioId,
+      'nome': nome,
+      'email': email,
+      'senha': senha,
+      'telefone': telefone,
+      'saldoTotal': saldoTotal,
+    };
   }
 }

@@ -1,9 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
+import 'package:pluto_finance/models/Orcamento.dart';
+import 'package:pluto_finance/models/Registro.dart';
+import 'package:pluto_finance/models/Usuario.dart';
 import 'package:pluto_finance/pages/RegistrarDespesas/RegistrarDespesasPage.dart';
 import 'package:pluto_finance/pages/RegistrarGanhos/RegistrarGanhosPage.dart';
 import 'package:pluto_finance/pages/Registros/RegistrosPage.dart';
+import 'package:pluto_finance/services/OrcamentoService/OrcamentoService.dart';
+import 'package:pluto_finance/services/RegistroService/RegistroService.dart';
+import 'package:pluto_finance/services/UsuarioService/UsuarioService.dart';
 import 'package:pluto_finance/widgets/Drawer/UserDrawer.dart';
 import 'package:provider/provider.dart';
 
@@ -16,10 +24,31 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  late final String userUid = FirebaseAuth.instance.currentUser!.uid; // Esse UID é o mesmo do documento do Firestore, se estiver assim estruturado
+  
+  final db = FirebaseFirestore.instance;
+  final usuarioService = UsuarioService();
+  final registrosService = RegistroService();
+  final orcamentoService = OrcamentoService();
+  
+  void carregarUsuario() async {
+    Usuario? usuario = await usuarioService.buscarUsuarioPorId(userUid);
+    List<Registro?> registros = await registrosService.listarRegistrosPorUsuario(userUid);
+    List<Orcamento?> orcamento = await orcamentoService.listarOrcamentosPorUsuario(userUid);
+    if (usuario != null) {
+      usuario.registros = registros.whereType<Registro>().toList();
+      usuario.orcamentos = orcamento.whereType<Orcamento>().toList();
+
+      final usuarioContext = context.read<UsuarioContext>();
+      usuarioContext.setUsuario(usuario); 
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
 
     final usuarioContext = context.read<UsuarioContext>();
+    
 
     return Scaffold(
       appBar: AppBar(

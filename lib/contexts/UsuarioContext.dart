@@ -7,7 +7,7 @@ class UsuarioContext extends ChangeNotifier {
   
   Usuario _usuario = Usuario();
 
-  int? get usuarioId => _usuario.usuarioId;
+  String? get usuarioId => _usuario.usuarioId;
   String? get nome => _usuario.nome;
   String? get email => _usuario.email;
   String? get senha => _usuario.senha;
@@ -16,7 +16,7 @@ class UsuarioContext extends ChangeNotifier {
   List<Registro> get registros => _usuario.registros;
   List<Orcamento> get orcamentos => _usuario.orcamentos;
 
-  void setUsuarioId(int id) {
+  void setUsuarioId(String id) {
     _usuario.usuarioId = id;
     notifyListeners();
   }
