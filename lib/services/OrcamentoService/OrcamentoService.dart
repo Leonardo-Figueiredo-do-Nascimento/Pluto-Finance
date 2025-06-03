@@ -7,7 +7,8 @@ class OrcamentoService {
 
   // CREATE
   Future<void> adicionarOrcamento(Orcamento orcamento) async {
-    await _orcamentosRef.add(orcamento.toJson());
+    DocumentReference docRef = await _orcamentosRef.add(orcamento.toJson());
+    await docRef.update({'orcamentoId': docRef.id});
   }
 
   // READ (todos os orçamentos de um usuário)

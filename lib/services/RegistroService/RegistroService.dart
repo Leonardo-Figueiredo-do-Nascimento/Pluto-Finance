@@ -7,10 +7,33 @@ class RegistroService {
   final CollectionReference _registrosRef =
       FirebaseFirestore.instance.collection('registros');
 
+  final CollectionReference _usuariosRef =
+      FirebaseFirestore.instance.collection('usuarios');    
+
   // CREATE
   Future<void> adicionarRegistro(Registro registro) async {
     DocumentReference docRef = await _registrosRef.add(registro.toJson());
     await docRef.update({'uid': docRef.id});
+
+    DocumentReference usuarioRef = _usuariosRef.doc(registro.usuarioId);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot snapshot = await transaction.get(usuarioRef);
+
+      if (!snapshot.exists) {
+        throw Exception("Usuário não encontrado");
+      }
+
+      // 3. Pega o saldo atual e soma com o valor do registro
+      double saldoAtual = snapshot.get('saldoTotal') ?? 0.0;
+      double novoSaldo = saldoAtual + registro.quantia!;
+
+      print("--------------$saldoAtual");
+      print("--------------$novoSaldo");
+
+      // 4. Atualiza o saldo
+      transaction.update(usuarioRef, {'saldoTotal': novoSaldo});
+    });
   }
 
   // READ (todos os registros de um usuário)

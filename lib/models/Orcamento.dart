@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Orcamento {
   String? orcamentoId;
   String? usuarioId;
@@ -13,8 +15,12 @@ class Orcamento {
     return Orcamento()
       ..orcamentoId = json['uid']
       ..usuarioId = json['usuarioId']
-      ..orcamento = json['orcamento']
-      ..orcamentoMes = json['orcamentoMes'];
+      ..orcamento = (json['orcamento'] as num?)?.toDouble()
+      ..orcamentoMes = json['orcamentoMes'] is Timestamp
+        ? (json['orcamentoMes'] as Timestamp).toDate()
+        : (json['orcamentoMes'] is String
+            ? DateTime.tryParse(json['orcamentoMes'])
+            : null);
   }
 
   Map<String, dynamic> toJson() {

@@ -31,22 +31,23 @@ class _HomePageState extends State<HomePage> {
   final registrosService = RegistroService();
   final orcamentoService = OrcamentoService();
   
-  void carregarUsuario() async {
-    Usuario? usuario = await usuarioService.buscarUsuarioPorId(userUid);
-    List<Registro?> registros = await registrosService.listarRegistrosPorUsuario(userUid);
-    print(usuario);
-    print(usuario!.email);
-    print(usuario!.nome);
-    print(usuario!.senha);
-    print(usuario!.saldoTotal);
-    print(registros.length);
-    List<Orcamento?> orcamento = await orcamentoService.listarOrcamentosPorUsuario(userUid);
-    if (usuario != null) {
-      usuario.registros = registros.whereType<Registro>().toList();
-      usuario.orcamentos = orcamento.whereType<Orcamento>().toList();
+  Future<void> carregarUsuario() async {
+    try {
+      Usuario? usuario = await usuarioService.buscarUsuarioPorId(userUid);
+      List<Registro?> registros = await registrosService.listarRegistrosPorUsuario(userUid);
+      print("Usuário: $usuario");
+      print("Registros encontrados: ${registros.length}");
 
-      final usuarioContext = context.read<UsuarioContext>();
-      usuarioContext.setUsuario(usuario); 
+      List<Orcamento?> orcamento = await orcamentoService.listarOrcamentosPorUsuario(userUid);
+      if (usuario != null) {
+        usuario.registros = registros.whereType<Registro>().toList();
+        usuario.orcamentos = orcamento.whereType<Orcamento>().toList();
+
+        final usuarioContext = context.read<UsuarioContext>();
+        usuarioContext.setUsuario(usuario); 
+      }
+    } catch (e) {
+      print("Erro ao carregar dados do usuário: $e");
     }
   }
   
@@ -59,7 +60,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    final usuarioContext = context.read<UsuarioContext>();
+    final usuarioContext = context.watch<UsuarioContext>();
+
+    print("Registros no build: ${usuarioContext.registros.length}");
     
     return Scaffold(
       appBar: AppBar(

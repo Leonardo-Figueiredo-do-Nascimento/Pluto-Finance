@@ -22,6 +22,7 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
   final orcamentoService = OrcamentoService();
   @override
   Widget build(BuildContext context) {
+
     final usuarioContext = context.read<UsuarioContext>();
 
     return Scaffold(
@@ -122,6 +123,9 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                           Orcamento orcamento = Orcamento();
                           orcamento.orcamento = double.parse(orcamentoController.text);
                           orcamento.orcamentoMes = DateFormat("MM/yyyy").parse(mesController.text);
+                          orcamento.usuarioId = usuarioContext.usuarioId;
+
+                          
 
                           // Verificar se já existe orçamento para o mesmo mês
                           bool existeOrcamento = usuarioContext.orcamentos.any((element) =>
@@ -137,6 +141,20 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                                   actions: <Widget>[
                                     TextButton(
                                       onPressed: () {
+                                        Orcamento? orcamentoExistente;
+
+                                        try {
+                                          orcamentoExistente = usuarioContext.orcamentos.firstWhere(
+                                            (element) => DateFormat("MM/yyyy").format(element.orcamentoMes!) ==
+                                                        DateFormat("MM/yyyy").format(orcamento.orcamentoMes!),
+                                          );
+                                        } catch (e) {
+                                          orcamentoExistente = null;
+                                        }
+                                        
+                                        if (orcamentoExistente != null) {
+                                          orcamentoService.atualizarOrcamento(orcamentoExistente.orcamentoId!, orcamento);
+                                        }
                                         // Atualizar o orçamento
                                         usuarioContext.orcamentos.removeWhere((element) =>
                                             DateFormat("MM/yyyy").format(element.orcamentoMes!) == DateFormat("MM/yyyy").format(orcamento.orcamentoMes!));
@@ -165,6 +183,8 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                               },
                             );
                           } else {
+                            orcamentoService.adicionarOrcamento(orcamento);
+
                             usuarioContext.adicionarOrcamento(orcamento);
 
                             ScaffoldMessenger.of(context).showSnackBar(
