@@ -60,8 +60,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
 
     final usuarioContext = context.watch<UsuarioContext>();
-
-    print("Registros no build: ${usuarioContext.registros.length}");
     
     return Scaffold(
       appBar: AppBar(

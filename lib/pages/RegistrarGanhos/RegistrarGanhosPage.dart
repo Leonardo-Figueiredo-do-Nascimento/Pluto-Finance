@@ -160,7 +160,7 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if(quantiaController.text!="" && selectedCategoria!=null && dataController.text!=""){
                           Registro registro = new Registro();
                           registro.usuarioId = userUid;
@@ -176,6 +176,7 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
                               duration: const Duration(seconds: 2),
                             ),
                           );
+                          await Future.delayed(Duration(seconds: 1));
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomePage()));
                         }else{
                           showDialog(context: context, builder: (BuildContext context) {

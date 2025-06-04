@@ -88,7 +88,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     habiilitarEdicao ? TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if(nomeController.text!="" && telefoneController.text!=""){
                           Usuario user = usuarioContext.getUsuario();
 
@@ -104,6 +104,7 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                               duration: const Duration(seconds: 2),
                             ),
                           );
+                          await Future.delayed(Duration(seconds: 1));
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_)=>HomePage()));
                         }else{
                           showDialog(context: context, builder: (BuildContext context) {
