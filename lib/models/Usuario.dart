@@ -27,7 +27,7 @@ class Usuario{
       ..email = json['email']
       ..senha = json['senha']
       ..telefone = json['telefone']
-      ..saldoTotal = (json['saldoTotal'] ?? 0).toDouble();
+      ..saldoTotal = (json['saldoTotal']).toDouble();
   }
 
   Map<String, dynamic> toJson() {

@@ -142,18 +142,26 @@ class _OrcamentoPageState extends State<OrcamentoPage> {
                                     TextButton(
                                       onPressed: () {
                                         Orcamento? orcamentoExistente;
-
+                                        
                                         try {
                                           orcamentoExistente = usuarioContext.orcamentos.firstWhere(
                                             (element) => DateFormat("MM/yyyy").format(element.orcamentoMes!) ==
                                                         DateFormat("MM/yyyy").format(orcamento.orcamentoMes!),
                                           );
+                                          print("---------------------------$orcamentoExistente");
+                                          print("---------------------------${usuarioContext.orcamentos}");
                                         } catch (e) {
                                           orcamentoExistente = null;
                                         }
-                                        
+
                                         if (orcamentoExistente != null) {
-                                          orcamentoService.atualizarOrcamento(orcamentoExistente.orcamentoId!, orcamento);
+                                          print("---------------------------${orcamentoExistente.orcamentoId}");
+                                          print("---------------------------${orcamentoExistente.usuarioId}");
+                                          print("---------------------------${orcamentoExistente.orcamento}");
+                                          print("---------------------------${orcamentoExistente.orcamentoMes}");
+                                          Orcamento? novoOrcamento = orcamentoExistente;
+                                          novoOrcamento.orcamento = double.parse(orcamentoController.text);
+                                          orcamentoService.atualizarOrcamento(orcamentoExistente.orcamentoId!, novoOrcamento);
                                         }
                                         // Atualizar o orçamento
                                         usuarioContext.orcamentos.removeWhere((element) =>

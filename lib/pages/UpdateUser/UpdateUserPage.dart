@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
+import 'package:pluto_finance/models/Usuario.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
+import 'package:pluto_finance/services/UsuarioService/UsuarioService.dart';
 import 'package:provider/provider.dart';
 
 class UpdateUserPage extends StatefulWidget {
@@ -14,19 +16,16 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
 
   var nomeController = TextEditingController(text: "");
   var telefoneController = TextEditingController(text: "");
-  var emailController = TextEditingController(text: "");
-  var senhaController = TextEditingController(text: "");
   bool senhaVisivel = true;
   bool habiilitarEdicao = false;
-  
+  final usuarioService = UsuarioService();
+
   @override
   Widget build(BuildContext context) {
 
-    final usuarioContext = context.read<UsuarioContext>();
-
+    final usuarioContext = context.watch<UsuarioContext>();
+    
     nomeController.text = usuarioContext.nome!;
-    emailController.text = usuarioContext.email!;
-    senhaController.text = usuarioContext.senha!;
     telefoneController.text = usuarioContext.telefone!;
 
     return Scaffold(
@@ -84,60 +83,20 @@ class _UpdateUserPageState extends State<UpdateUserPage> {
                   ],
                 ),
                 SizedBox(height: 17,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("E-mail",style: TextStyle(color: Colors.white,fontSize: 20)),
-                    TextField(
-                      enabled: habiilitarEdicao,
-                      style: TextStyle(color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255)),
-                      controller: emailController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'seuemail@email.com',  
-                        filled: true,
-                        fillColor: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 17,),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Senha",style: TextStyle(color: Colors.white,fontSize: 20)),
-                    TextField(
-                      enabled: habiilitarEdicao,
-                      style: TextStyle(color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255)),
-                      controller: senhaController,
-                      obscureText: senhaVisivel,
-                      decoration: InputDecoration(
-                        hintText: 'Sua senha', 
-                        filled: true,
-                        fillColor: Colors.black,
-                        border: OutlineInputBorder(),
-                        suffixIcon: IconButton(
-                          icon: Icon(senhaVisivel ? Icons.visibility : Icons.visibility_off , color: habiilitarEdicao ? Colors.white : const Color.fromARGB(123, 255, 255, 255),),
-                          onPressed: () {
-                            setState(() {
-                              senhaVisivel = !senhaVisivel;
-                          });
-                        },),
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 17,),
+                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     habiilitarEdicao ? TextButton(
                       onPressed: () {
-                        if(nomeController.text!="" && telefoneController.text!="" && emailController.text!="" && senhaController.text!=""){
-                          usuarioContext.setNome(nomeController.text);
-                          usuarioContext.setEmail(emailController.text);
-                          usuarioContext.setSenha(senhaController.text);
-                          usuarioContext.setTelefone(telefoneController.text);
+                        if(nomeController.text!="" && telefoneController.text!=""){
+                          Usuario user = usuarioContext.getUsuario();
+
+                          user.nome = nomeController.text;
+                          user.telefone = telefoneController.text;
+                          
+                          usuarioService.atualizarUsuario(user);
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               backgroundColor: Colors.deepPurple.shade700,

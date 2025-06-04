@@ -1,7 +1,9 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pluto_finance/models/Registro.dart';
+import 'package:pluto_finance/models/Usuario.dart';
 
 class RegistroService {
   final CollectionReference _registrosRef =
@@ -11,29 +13,30 @@ class RegistroService {
       FirebaseFirestore.instance.collection('usuarios');    
 
   // CREATE
-  Future<void> adicionarRegistro(Registro registro) async {
+  Future<void> adicionarRegistro(Registro registro, {bool despesa = false}) async {
     DocumentReference docRef = await _registrosRef.add(registro.toJson());
     await docRef.update({'uid': docRef.id});
 
-    DocumentReference usuarioRef = _usuariosRef.doc(registro.usuarioId);
+    late final String userUid = FirebaseAuth.instance.currentUser!.uid;
 
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      DocumentSnapshot snapshot = await transaction.get(usuarioRef);
+    final snapshot = await _usuariosRef.where('uid', isEqualTo: userUid).limit(1).get();
+    if (snapshot.docs.isNotEmpty) {
+      final doc = snapshot.docs.first;
+      final data = doc.data() as Map<String, dynamic>;
 
-      if (!snapshot.exists) {
-        throw Exception("Usuário não encontrado");
+      Usuario usuario = Usuario.fromJson(data);
+      if(despesa == true){
+        usuario.saldoTotal -= registro.quantia!;
+      }else{
+        usuario.saldoTotal += registro.quantia!;
       }
 
-      // 3. Pega o saldo atual e soma com o valor do registro
-      double saldoAtual = snapshot.get('saldoTotal') ?? 0.0;
-      double novoSaldo = saldoAtual + registro.quantia!;
-
-      print("--------------$saldoAtual");
-      print("--------------$novoSaldo");
-
-      // 4. Atualiza o saldo
-      transaction.update(usuarioRef, {'saldoTotal': novoSaldo});
-    });
+      // CORRETO: pega o ID real do documento no Firestore
+      DocumentReference usuarioRef = _usuariosRef.doc(doc.id);
+      await usuarioRef.update(usuario.toJson());
+    } else {
+      throw Exception('Usuário não encontrado');
+    }
   }
 
   // READ (todos os registros de um usuário)
@@ -63,14 +66,30 @@ class RegistroService {
     }
   }
 
-  // UPDATE
-  Future<void> atualizarRegistro(String docId, Registro registro) async {
-    await _registrosRef.doc(docId).update(registro.toJson());
-  }
-
   // DELETE
-  Future<void> deletarRegistro(String docId) async {
+  Future<void> deletarRegistro(String docId, Registro registro,{bool despesa = false}) async {
     await _registrosRef.doc(docId).delete();
+
+    late final String userUid = FirebaseAuth.instance.currentUser!.uid;
+
+    final snapshot = await _usuariosRef.where('uid', isEqualTo: userUid).limit(1).get();
+    if (snapshot.docs.isNotEmpty) {
+      final doc = snapshot.docs.first;
+      final data = doc.data() as Map<String, dynamic>;
+
+      Usuario usuario = Usuario.fromJson(data);
+      if(despesa == true){
+        usuario.saldoTotal += registro.quantia!;
+      } else{
+        usuario.saldoTotal -= registro.quantia!;
+      }
+
+      // CORRETO: pega o ID real do documento no Firestore
+      DocumentReference usuarioRef = _usuariosRef.doc(doc.id);
+      await usuarioRef.update(usuario.toJson());
+    } else {
+      throw Exception('Usuário não encontrado');
+    }
   }
 
   // GET por ID do documento

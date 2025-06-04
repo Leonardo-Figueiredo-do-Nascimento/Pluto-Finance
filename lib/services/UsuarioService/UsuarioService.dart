@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:pluto_finance/models/Usuario.dart';
 
 class UsuarioService {
@@ -33,8 +34,27 @@ class UsuarioService {
   }
 
   // UPDATE
-  Future<void> atualizarUsuario(String docId, Usuario usuario) async {
-    await _usuariosRef.doc(docId).update(usuario.toJson());
+  Future<void> atualizarUsuario(Usuario usuario) async {
+    late final String userUid = FirebaseAuth.instance.currentUser!.uid;
+    print("------------------- $userUid");
+    print("------------------- ${usuario.toJson()}");
+    
+    try {
+      final snapshot = await _usuariosRef
+          .where('uid', isEqualTo: userUid)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final docId = snapshot.docs.first.id;
+        await _usuariosRef.doc(docId).update(usuario.toJson());
+        print("Usuário atualizado com sucesso.");
+      } else {
+        print("Usuário não encontrado.");
+      }
+    } catch (e) {
+      print("Erro ao atualizar usuário: $e");
+    }
   }
 
   // DELETE

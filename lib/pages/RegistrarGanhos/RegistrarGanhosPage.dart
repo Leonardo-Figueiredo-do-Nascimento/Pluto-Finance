@@ -168,7 +168,6 @@ class _RegistrarGanhosPageState extends State<RegistrarGanhosPage> {
                           registro.categoria = selectedCategoria;
                           registro.tipo = "Ganho";
                           registro.dataRegistro = DateFormat("dd/MM/yyyy").parse(dataController.text);
-                          //usuarioContext.adicionarRegistro(registro);
                           registroService.adicionarRegistro(registro);
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(

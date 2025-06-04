@@ -36,7 +36,6 @@ class _HomePageState extends State<HomePage> {
       Usuario? usuario = await usuarioService.buscarUsuarioPorId(userUid);
       List<Registro?> registros = await registrosService.listarRegistrosPorUsuario(userUid);
       print("Usuário: $usuario");
-      print("Registros encontrados: ${registros.length}");
 
       List<Orcamento?> orcamento = await orcamentoService.listarOrcamentosPorUsuario(userUid);
       if (usuario != null) {

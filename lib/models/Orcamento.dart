@@ -13,7 +13,7 @@ class Orcamento {
 
   factory Orcamento.fromJson(Map<String, dynamic> json) {
     return Orcamento()
-      ..orcamentoId = json['uid']
+      ..orcamentoId = json['orcamentoId']
       ..usuarioId = json['usuarioId']
       ..orcamento = (json['orcamento'] as num?)?.toDouble()
       ..orcamentoMes = json['orcamentoMes'] is Timestamp
@@ -28,7 +28,7 @@ class Orcamento {
       'orcamentoId': orcamentoId,
       'usuarioId': usuarioId,
       'orcamento': orcamento,
-      'orcamentoMes': orcamentoMes,
+      'orcamentoMes': orcamentoMes != null ? Timestamp.fromDate(orcamentoMes!) : null,
     };
   }
 }

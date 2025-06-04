@@ -24,8 +24,33 @@ class OrcamentoService {
 
   // UPDATE
   Future<void> atualizarOrcamento(String docId, Orcamento orcamento) async {
-    await _orcamentosRef.doc(docId).update(orcamento.toJson());
+    print("========= ATUALIZANDO ORÇAMENTO =========");
+    print("ID buscado: $docId");
+    print("Dados enviados: ${orcamento.toJson()}");
+
+    try {
+      final snapshot = await _orcamentosRef
+          .where('orcamentoId', isEqualTo: orcamento.orcamentoId)
+          .limit(1)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        final firestoreId = snapshot.docs.first.id;
+        print("Documento Firestore encontrado: $firestoreId");
+
+        DocumentReference orcamentoRef = _orcamentosRef.doc(firestoreId);
+        await orcamentoRef.set(orcamento.toJson(), SetOptions(merge: true));
+
+        print("✅ Orçamento atualizado com sucesso.");
+      } else {
+        print("❌ Documento com orcamentoId=$docId não encontrado.");
+      }
+    } catch (e, s) {
+      print("❌ Erro ao atualizar orcamento: $e");
+      print(s);
+    }
   }
+
 
   // DELETE
   Future<void> deletarOrcamento(String docId) async {
