@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pluto_finance/contexts/LoginContext.dart';
 import 'package:pluto_finance/pages/PasswordCode/PasswordCodePage.dart';
 import 'package:pluto_finance/services/Authentication/FirebaseAuthentication.dart';
+import 'package:provider/provider.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -17,6 +19,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LoginContext>(context);
+    
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -61,7 +65,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 TextButton(
                   onPressed: () {
                     if(emailController.text!='') {
-                      
+                      provider.setEmail(emailController.text);
+                      firebaseAuthentication.resetPassword(emailController.text);
                       Navigator.push(context, MaterialPageRoute(builder: (_) => PasswordCodePage()));
                     }else{
                       showDialog(context: context, builder: (BuildContext context) {

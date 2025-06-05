@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pluto_finance/contexts/LoginContext.dart';
 import 'package:pluto_finance/pages/Home/HomePage.dart';
 import 'package:pluto_finance/services/Authentication/FirebaseAuthentication.dart';
+import 'package:provider/provider.dart';
 
 class PasswordCodePage extends StatefulWidget {
   const PasswordCodePage({super.key});
@@ -30,6 +32,7 @@ class _PasswordCodePageState extends State<PasswordCodePage> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<LoginContext>(context);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -53,7 +56,7 @@ class _PasswordCodePageState extends State<PasswordCodePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Informe o código enviado por e-mail:",
+                      "Informe a senha enviada por e-mail:",
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     SizedBox(height: 10),
@@ -76,11 +79,26 @@ class _PasswordCodePageState extends State<PasswordCodePage> {
               children: [
                 TextButton(
                   onPressed: isButtonEnabled
-                      ? () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => HomePage()),
-                          );
+                      ? () async {
+                          print(provider.email);
+                          String? error = await firebaseAuthentication.login(provider.email, codigoController.text);
+                          if (error != null) {
+                            showDialog(context: context, builder: (BuildContext context) {
+                            return AlertDialog(
+                              content: Text("Erro ao fazer login: ${error}",style:  const TextStyle(fontSize: 15,fontWeight: FontWeight.w500),),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop(); // Fecha o alerta
+                                  },
+                                  child: const Text("OK"),
+                                ),
+                              ],
+                            );
+                          });
+                          } else {
+                            Navigator.push(context, MaterialPageRoute(builder: (_) => HomePage()));
+                          }
                         }
                       : null, 
                   style: TextButton.styleFrom(

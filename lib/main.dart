@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pluto_finance/contexts/LoginContext.dart';
 import 'package:pluto_finance/contexts/UsuarioContext.dart';
 import 'package:pluto_finance/firebase_options.dart';
 import 'package:pluto_finance/pages/Login/LoginPage.dart';
@@ -12,6 +13,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UsuarioContext()),
+        ChangeNotifierProvider(create: (_) => LoginContext()),
       ],
       child: const MyApp(),
     ),
